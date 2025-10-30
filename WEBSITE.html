@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hannie's Book Stories - Where Every Chapter is a Piece of My Heart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="design.css">
+</head>
+<body>
+    <div class="notification" id="notification"></div>
+    
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="hannie.png" alt="Hannie" class="logo-image" onerror="this.style.display='none'">
+                    <div class="logo-text">
+                        <span class="main">Hannie's Book Stories</span>
+                        <span class="sub">My experiences built my stories, and my stories healed me</span>
+                    </div>
+                </div>
+                <div class="search-container">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search stories, genres...">
+                    <button class="search-btn" id="searchBtn">🔍</button>
+                </div>
+                <nav>
+                    <a href="#" class="nav-link active" data-page="home">Home</a>
+                    <a href="#" class="nav-link" data-page="library">Browse</a>
+                    <a href="#" class="nav-link" data-page="about">About</a>
+                </nav>
+                <div class="header-icons">
+                    <button class="icon-btn" id="darkModeToggle">🌙</button>
+                    <button class="icon-btn" id="bookmarkBtn">❤️</button>
+                    <div class="user-avatar" id="userAvatar">👤</div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="user-dropdown-header">
+                            <h3 id="dropdownUserName">Guest</h3>
+                            <p id="dropdownUserEmail">Not logged in</p>
+                        </div>
+                        <div class="user-dropdown-menu">
+                            <button class="user-dropdown-item" id="profileBtn" style="display: none;"><span>👤</span> Profile</button>
+                            <button class="user-dropdown-item" id="myStoriesBtn" style="display: none;"><span>📚</span> Reading List</button>
+                            <button class="user-dropdown-item" id="dashboardMenuBtn" style="display: none;"><span>✍️</span> Dashboard</button>
+                            <div class="user-dropdown-divider" id="menuDivider" style="display: none;"></div>
+                            <button class="user-dropdown-item" id="loginMenuBtn"><span>🔐</span> Login / Sign Up</button>
+                            <button class="user-dropdown-item user-dropdown-logout" id="logoutBtn" style="display: none;"><span>🚪</span> Logout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main id="mainContent">
+        <!-- Home Page -->
+        <div id="homePage" class="page">
+            <section class="hero">
+                <div class="container">
+                    <h1>Hannie's Book Stories</h1>
+                    <p>Where every chapter is a piece of my heart</p>
+                    <div class="cta-buttons">
+                        <button class="btn btn-primary" id="startReadingBtn">Start Reading</button>
+                        <button class="btn btn-secondary" id="browseStoriesBtn">Browse Stories</button>
+                    </div>
+                </div>
+            </section>
+            <section class="section">
+                <div class="container">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalStoriesCount">0</div>
+                            <div class="stat-label">Total Stories</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalChaptersCount">0</div>
+                            <div class="stat-label">Total Chapters</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalReadersCount">0</div>
+                            <div class="stat-label">Happy Readers</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalSubscribersCount">0</div>
+                            <div class="stat-label">Newsletter Subscribers</div>
+                        </div>
+                    </div>
+                    <div class="section-header">
+                        <h2 class="section-title">Popular Now</h2>
+                    </div>
+                    <div class="stories-grid" id="popularStories"></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Library Page -->
+        <div id="libraryPage" class="page hidden">
+            <section class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title">Story Library</h2>
+                        <div class="filter-tabs">
+                            <div class="filter-tab active" data-filter="all">All</div>
+                            <div class="filter-tab" data-filter="bestseller">Bestseller</div>
+                            <div class="filter-tab" data-filter="completed">Completed</div>
+                            <div class="filter-tab" data-filter="ongoing">Ongoing</div>
+                        </div>
+                    </div>
+                    <div class="stories-grid" id="libraryStories"></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Reader Page -->
+        <div id="readerPage" class="page hidden">
+            <div class="container">
+                <div class="reader-container">
+                    <div class="reader-header">
+                        <h1 class="reader-title" id="readerTitle"></h1>
+                        <p class="reader-chapter" id="readerChapter"></p>
+                        <div class="reader-progress">
+                            <div class="reader-progress-bar" id="readerProgressBar"></div>
+                        </div>
+                    </div>
+                    <div id="triggerWarningSection"></div>
+                    <div id="authorNoteTop"></div>
+                    <div class="reader-content" id="readerContent"></div>
+                    <div id="authorNoteBottom"></div>
+                    <div class="chapter-nav">
+                        <button class="btn btn-secondary btn-small" id="prevChapter">← Previous</button>
+                        <button class="btn btn-primary btn-small" id="nextChapter">Next →</button>
+                    </div>
+
+                    <div class="comments-section">
+                        <div class="comments-header">
+                            <h3 class="comments-title">Comments & Feedback</h3>
+                            <span class="comments-count" id="commentsCount">0 Comments</span>
+                        </div>
+                        <div class="comment-form">
+                            <h4>Share your thoughts</h4>
+                            <textarea class="comment-input" id="commentInput" placeholder="What did you think of this chapter?"></textarea>
+                            <div class="comment-actions">
+                                <div class="rating-stars" id="ratingStars">
+                                    <span class="star" data-rating="1">⭐</span>
+                                    <span class="star" data-rating="2">⭐</span>
+                                    <span class="star" data-rating="3">⭐</span>
+                                    <span class="star" data-rating="4">⭐</span>
+                                    <span class="star" data-rating="5">⭐</span>
+                                </div>
+                                <button class="btn btn-primary btn-small" id="submitComment">Post Comment</button>
+                            </div>
+                        </div>
+                        <div class="comments-list" id="commentsList">
+                            <div class="no-comments"><p>No comments yet. Be the first! 💭</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Floating Buttons -->
+            <button class="floating-btn reader-settings-btn" id="readerSettingsBtn">⚙️</button>
+            <div class="reader-settings-panel" id="readerSettingsPanel">
+                <div class="settings-group">
+                    <label class="settings-label">Reading Theme</label>
+                    <div class="theme-selector">
+                        <div class="theme-option theme-default active" data-theme="default" title="Default"></div>
+                        <div class="theme-option theme-sepia" data-theme="sepia" title="Sepia"></div>
+                        <div class="theme-option theme-dark" data-theme="dark" title="Dark"></div>
+                        <div class="theme-option theme-night" data-theme="night" title="Night"></div>
+                    </div>
+                </div>
+                <div class="settings-group">
+                    <label class="settings-label">Font Family</label>
+                    <div class="font-preview">
+                        <div class="font-option active" data-font="Poppins" style="font-family: 'Poppins', sans-serif;">Aa</div>
+                        <div class="font-option" data-font="Georgia" style="font-family: Georgia, serif;">Aa</div>
+                        <div class="font-option" data-font="Arial" style="font-family: Arial, sans-serif;">Aa</div>
+                    </div>
+                </div>
+                <div class="settings-group">
+                    <label class="settings-label">Font Size: <span id="fontSizeValue">18px</span></label>
+                    <input type="range" class="settings-control" id="fontSizeSlider" min="14" max="28" value="18" step="2">
+                </div>
+                <div class="settings-group">
+                    <label class="settings-label">Line Height: <span id="lineHeightValue">1.8</span></label>
+                    <input type="range" class="settings-control" id="lineHeightSlider" min="1.4" max="2.4" value="1.8" step="0.2">
+                </div>
+            </div>
+            <button class="floating-btn toc-btn" id="tocBtn">📑</button>
+            <button class="floating-btn feedback-widget" id="feedbackWidget">💬</button>
+            <button class="floating-btn share-widget" id="shareWidget">🔗</button>
+            <button class="floating-btn scroll-top-btn" id="scrollTopBtn">↑</button>
+        </div>
+
+        <!-- Table of Contents Overlay -->
+        <div class="toc-overlay" id="tocOverlay">
+            <div class="toc-header">
+                <h2 class="toc-title">Table of Contents</h2>
+                <button class="toc-close" id="tocCloseBtn">×</button>
+            </div>
+            <div class="toc-content">
+                <div class="toc-story-info">
+                    <h3 class="toc-story-title" id="tocStoryTitle"></h3>
+                    <p id="tocStoryMeta"></p>
+                </div>
+                <div class="toc-chapter-list" id="tocChapterList"></div>
+            </div>
+        </div>
+
+        <!-- About Page -->
+        <div id="aboutPage" class="page hidden">
+            <section class="section">
+                <div class="container about-section">
+                    <div class="about-header">
+                        <div class="about-photo">
+                            <img src="chibi.jpg" alt="Hannie" onerror="this.parentElement.innerHTML='✍️'">
+                        </div>
+                        <h1 class="section-title">About Hannie</h1>
+                    </div>
+                    <div class="about-content">
+                        <h3>Welcome to My World of Stories</h3>
+                        <p>Hi! I’m Hannie, but some of you might know me as Faye. I started writing when I was 10 years old, and my very first story was The Dream of Darlene — I actually turned it into a script back then. That’s where everything started.
+
+Writing has always been my escape and my comfort. It’s the one thing that helps me express what I can’t always say out loud. Every story I write has a piece of me in it — my thoughts, emotions, and little experiences in life.
+
+I’ve written a lot since then, and I’m still learning and growing as a writer. My goal isn’t just to tell stories, but to make readers feel something — to remind them they’re not alone in whatever they’re going through.
+
+If my words can touch even one heart, then that’s already more than enough for me.</p>
+                        <h3>Why I Write</h3>
+                        <p>Writing has always been my way of expressing emotions, dreams, and the beauty I see in everyday life. Each story is a journey, and I'm grateful you're here to experience them with me.</p>
+                        <h3>My Journey</h3>
+                        <p>Every story you find here is written with love and dedication. Thank you for being part of this beautiful journey.</p>
+                    </div>
+                    <div class="about-content">
+                        <h3>Connect With Me</h3>
+                        <p>Follow me on social media to stay updated with new stories, behind-the-scenes content, and more!</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Dashboard Page (Writer Only) -->
+        <div id="dashboardPage" class="page hidden">
+            <section class="dashboard">
+                <div class="container">
+                    <div class="dashboard-header">
+                        <h2 class="section-title">Writer Dashboard</h2>
+                        <button class="btn btn-primary" id="addStoryBtn">+ Create New Story</button>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="myStoriesCount">0</div>
+                            <div class="stat-label">My Stories</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="myChaptersCount">0</div>
+                            <div class="stat-label">Total Chapters</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="myWordsCount">0</div>
+                            <div class="stat-label">Total Words</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalViewsCount">0</div>
+                            <div class="stat-label">Total Views</div>
+                        </div>
+                    </div>
+                    <div class="stats-card-detail">
+                        <h3 style="font-family: 'Playfair Display', serif; color: var(--primary); margin-bottom: 20px;">📊 Reader Demographics</h3>
+                        <div class="stats-row">
+                            <span>Total Registered Readers:</span>
+                            <strong id="demographicsReaders">0</strong>
+                        </div>
+                        <div class="stats-row">
+                            <span>Newsletter Subscribers:</span>
+                            <strong id="demographicsSubscribers">0</strong>
+                        </div>
+                        <div class="stats-row">
+                            <span>Active This Month:</span>
+                            <strong id="demographicsActive">0</strong>
+                        </div>
+                        <div class="stats-row">
+                            <span>Average Rating:</span>
+                            <strong id="demographicsRating">⭐ N/A</strong>
+                        </div>
+                    </div>
+                    <div class="story-management">
+                        <div id="storyList"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Editor Page (Writer Only) -->
+        <div id="editorPage" class="page hidden">
+            <div class="editor-container">
+                <div class="editor-header">
+                    <input type="text" class="editor-title-input" id="editorStoryTitle" placeholder="Story Title">
+                    <div class="editor-actions">
+                        <button class="btn btn-secondary btn-small" id="backToDashboard">← Back</button>
+                        <button class="btn btn-secondary btn-small" id="previewStory">👁️ Preview</button>
+                        <button class="btn btn-primary btn-small" id="saveStory">💾 Save</button>
+                        <button class="btn btn-primary btn-small" id="publishStory">🚀 Publish</button>
+                    </div>
+                </div>
+
+                <div class="editor-main">
+                    <div class="editor-sidebar">
+                        <div class="sidebar-section">
+                            <h4>📝 Sections</h4>
+                            <div class="sidebar-option active" data-section="details"><span>📋</span> Story Details</div>
+                            <div class="sidebar-option" data-section="chapters"><span>📚</span> Chapters</div>
+                            <div class="sidebar-option" data-section="settings"><span>⚙️</span> Settings</div>
+                        </div>
+                        <div class="sidebar-section">
+                            <h4>📊 Stats</h4>
+                            <p style="font-size: 12px; color: var(--text-light); margin: 5px 0;"><strong id="totalChapters">0</strong> Chapters</p>
+                            <p style="font-size: 12px; color: var(--text-light); margin: 5px 0;"><strong id="totalWords">0</strong> Words</p>
+                        </div>
+                    </div>
+
+                    <div class="editor-content">
+                        <div class="editor-section active" id="detailsSection">
+                            <h3 style="font-family: 'Playfair Display', serif; color: var(--primary); margin-bottom: 20px;">Story Details</h3>
+                            <div class="story-details-form">
+                                <div class="form-group">
+                                    <label>Cover Image</label>
+                                    <div class="cover-upload" onclick="document.getElementById('coverUpload').click()">
+                                        <input type="file" id="coverUpload" accept="image/*">
+                                        <div id="coverPreview" class="cover-preview">
+                                            <p style="color: var(--text-light); font-size: 48px;">📷</p>
+                                            <p style="color: var(--text-light); font-size: 14px;">Click to upload cover image</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Genre</label>
+                                        <select id="storyGenre">
+                                            <option>Romance</option>
+                                            <option>Fantasy</option>
+                                            <option>Mystery</option>
+                                            <option>Thriller</option>
+                                            <option>Contemporary</option>
+                                            <option>Science Fiction</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Status</label>
+                                        <select id="storyStatus">
+                                            <option value="upcoming">Upcoming</option>
+                                            <option value="ongoing">Ongoing</option>
+                                            <option value="completed">Completed</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Schedule Publishing Date (Optional)</label>
+                                    <input type="datetime-local" id="scheduleDate" placeholder="Leave empty to publish immediately">
+                                </div>
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <textarea id="storyDescription" rows="5" placeholder="Write a compelling description..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="editor-section" id="chaptersSection">
+                            <h3 style="font-family: 'Playfair Display', serif; color: var(--primary); margin-bottom: 20px;">Chapters</h3>
+                            <div class="chapters-list" id="editorChaptersList"></div>
+                            <button class="add-chapter-btn" id="addNewChapter">+ Add New Chapter</button>
+                        </div>
+
+                        <div class="editor-section" id="settingsSection">
+                            <h3 style="font-family: 'Playfair Display', serif; color: var(--primary); margin-bottom: 20px;">Settings</h3>
+                            <div class="form-group">
+                                <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                                    <span>⭐ Mark as Bestseller</span>
+                                    <input type="checkbox" id="markBestseller" style="width: auto;">
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                                    <span>🔞 Mature Content</span>
+                                    <input type="checkbox" id="markMature" style="width: auto;">
+                                </label>
+                                <p style="font-size: 12px; color: var(--text-light); margin-top: 5px;">Check this if the story contains adult themes, violence, or explicit content</p>
+                            </div>
+                            <div class="form-group">
+                                <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                                    <span>💬 Enable Comments</span>
+                                    <input type="checkbox" id="enableComments" style="width: auto;" checked>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="word-count" id="wordCount">0 words</div>
+        </div>
+    </main>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter" id="newsletterSection">
+        <div class="container">
+            <h2 id="newsletterTitle">📬 Stay Updated</h2>
+            <p id="newsletterSubtitle">Subscribe for new chapters and stories</p>
+            <form class="newsletter-form" id="newsletterForm">
+                <input type="email" id="newsletterEmail" placeholder="Enter your email" required>
+                <button type="submit" class="btn btn-primary" id="newsletterSubmitBtn">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Hannie's Book Stories</h3>
+                    <p>Where every chapter is a piece of my heart. Join me on this literary journey filled with romance, mystery, and unforgettable characters.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" onclick="navigateTo('home'); return false;">Home</a></li>
+                        <li><a href="#" onclick="navigateTo('library'); return false;">Browse Stories</a></li>
+                        <li><a href="#" onclick="navigateTo('about'); return false;">About Hannie</a></li>
+                        <li><a href="#" onclick="openModal('termsModal'); return false;">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-icon">📘 Facebook</a>
+                        <a href="#" class="social-icon">📷 Instagram</a>
+                        <a href="#" class="social-icon">🐦 Twitter</a>
+                        <a href="#" class="social-icon">📧 Email</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Hannie's Book Stories. All rights reserved.</p>
+                <p>Made with ❤️ by Hannie | <a href="#" onclick="openModal('termsModal'); return false;">Terms & Conditions</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('loginModal')">×</button>
+            <h2 class="modal-title">Welcome Back</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div style="position: relative;">
+                        <input type="password" id="loginPassword" name="password" required>
+                        <button type="button" onclick="togglePasswordVisibility('loginPassword', this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 18px;">👁️</button>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Login</button>
+                <p style="text-align: center; margin-top: 20px;">Don't have an account? <a href="#" onclick="switchModal('loginModal', 'signupModal')" style="color: var(--primary);">Sign up</a></p>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('signupModal')">×</button>
+            <h2 class="modal-title">Join the Story</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" name="fullname" required>
+                </div>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Password (min 6 characters)</label>
+                    <div style="position: relative;">
+                        <input type="password" id="signupPassword" name="password" required minlength="6">
+                        <button type="button" onclick="togglePasswordVisibility('signupPassword', this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 18px;">👁️</button>
+                    </div>
+                    <div id="passwordStrength" style="margin-top: 5px; font-size: 12px;"></div>
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <div style="position: relative;">
+                        <input type="password" id="confirmPassword" name="confirmPassword" required minlength="6">
+                        <button type="button" onclick="togglePasswordVisibility('confirmPassword', this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 18px;">👁️</button>
+                    </div>
+                    <div id="passwordMatch" style="margin-top: 5px; font-size: 12px;"></div>
+                </div>
+               <div class="form-group checkbox-group">
+    <input type="checkbox" id="termsCheckbox" required>
+    <label for="termsCheckbox" class="terms-text">
+        I agree to the 
+        <a href="#" onclick="event.preventDefault(); openTermsFromSignup();" class="terms-link">Terms and Conditions</a>
+    </label>
+</div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Sign Up</button>
+                <p style="text-align: center; margin-top: 20px;">Already have an account? <a href="#" onclick="switchModal('signupModal', 'loginModal')" style="color: var(--primary);">Login</a></p>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="profileModal">
+        <div class="modal-content profile-modal-content">
+            <button class="modal-close" onclick="closeModal('profileModal')">×</button>
+            <h2 class="modal-title">My Profile</h2>
+            <div class="profile-avatar-container">
+                <div class="profile-avatar-wrapper">
+                    <div id="profileAvatarImg" class="profile-avatar-img">?</div>
+                    <button onclick="document.getElementById('profilePhotoUpload').click()" class="profile-photo-btn">📷</button>
+                    <input type="file" id="profilePhotoUpload" accept="image/*" style="display: none;">
+                </div>
+                <button class="btn btn-secondary btn-small" onclick="toggleEditProfile()" id="editProfileBtn">✏️ Edit Profile</button>
+            </div>
+            <div id="profileViewMode" class="profile-view-mode">
+                <div class="profile-field">
+                    <label>Name</label>
+                    <p id="profileNameView">Guest</p>
+                </div>
+                <div class="profile-field">
+                    <label>Username</label>
+                    <p id="profileUsernameView">@guest</p>
+                </div>
+                <div class="profile-field">
+                    <label>Email</label>
+                    <p id="profileEmailView">guest@email.com</p>
+                </div>
+                <div class="profile-field">
+                    <label>Bio</label>
+                    <p id="profileBioView">No bio yet</p>
+                </div>
+                <div class="profile-field">
+                    <label>Favorite Genre</label>
+                    <p id="profileGenreView">Not set</p>
+                </div>
+            </div>
+            <div id="profileEditMode" class="profile-edit-mode" style="display: none;">
+                <form id="editProfileForm">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="editFullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="editEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Bio</label>
+                        <textarea id="editBio" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Favorite Genre</label>
+                        <select id="editFavoriteGenre">
+                            <option value="">Select...</option>
+                            <option>Romance</option>
+                            <option>Fantasy</option>
+                            <option>Mystery</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" class="btn btn-secondary" onclick="toggleEditProfile()" style="flex: 1;">Cancel</button>
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">💾 Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="chapterEditorModal">
+        <div class="modal-content" style="max-width: 900px;">
+            <button class="modal-close" onclick="closeModal('chapterEditorModal')">×</button>
+            <h2 class="modal-title">Chapter Editor</h2>
+            <div class="form-group">
+                <label>Chapter Title</label>
+                <input type="text" class="chapter-title-input" id="chapterTitleEdit" placeholder="Chapter 1: The Beginning">
+            </div>
+            <div class="form-group">
+                <label>Trigger Warnings (Optional)</label>
+                <input type="text" id="chapterTriggerWarnings" placeholder="e.g., Violence, Strong Language, Mature Themes">
+                <p style="font-size: 12px; color: var(--text-light); margin-top: 5px;">Comma-separated. Will be shown before chapter content.</p>
+            </div>
+            <div class="form-group">
+                <label>Author's Note - Beginning (Optional)</label>
+                <textarea id="chapterAuthorNoteTop" rows="2" placeholder="Add a note to readers before the chapter..."></textarea>
+            </div>
+            <div class="editor-toolbar">
+                <button class="toolbar-btn" onclick="formatText('bold')"><strong>B</strong></button>
+                <button class="toolbar-btn" onclick="formatText('italic')"><em>I</em></button>
+                <button class="toolbar-btn" onclick="formatText('underline')"><u>U</u></button>
+                <button class="toolbar-btn" onclick="insertQuote()">💬 Quote</button>
+                <button class="toolbar-btn" onclick="insertDivider()">➖ Divider</button>
+            </div>
+            <div class="form-group">
+                <label>Chapter Content</label>
+                <textarea class="chapter-content-editor" id="chapterContentEdit" placeholder="Start writing..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Author's Note - End (Optional)</label>
+                <textarea id="chapterAuthorNoteBottom" rows="2" placeholder="Add a note to readers after the chapter..."></textarea>
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                <button class="btn btn-secondary" onclick="closeModal('chapterEditorModal')">Cancel</button>
+                <button class="btn btn-primary" id="saveChapterEdit">💾 Save Chapter</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms and Conditions Modal -->
+    <div class="modal" id="termsModal">
+        <div class="modal-content" style="max-width: 800px;">
+            <button class="modal-close" onclick="closeTermsModal()">×</button>
+            <h2 class="modal-title">Terms & Conditions</h2>
+            <div class="terms-content">
+                <p class="terms-updated">Last Updated: October 26, 2025</p>
+                
+                <h3>1. Acceptance of Terms</h3>
+                <p>By accessing and using Hannie's Book Stories ("the Website"), you accept and agree to be bound by the terms and provisions of this agreement. If you do not agree to these terms, please do not use this Website.</p>
+                
+                <h3>2. User Accounts</h3>
+                <p>To access certain features of the Website, you may be required to create an account. You agree to:</p>
+                <ul>
+                    <li>Provide accurate, current, and complete information during registration</li>
+                    <li>Maintain the security of your password and account</li>
+                    <li>Be responsible for all activities that occur under your account</li>
+                    <li>Notify us immediately of any unauthorized use of your account</li>
+                </ul>
+                
+                <h3>3. Content Ownership & Copyright</h3>
+                <p>All stories, text, graphics, and other content on this Website are the exclusive property of Hannie (the author) and are protected by copyright laws. You may not:</p>
+                <ul>
+                    <li>Reproduce, distribute, or republish any content without written permission</li>
+                    <li>Use content for commercial purposes</li>
+                    <li>Claim authorship of any stories or content</li>
+                    <li>Copy or share content on other platforms without authorization</li>
+                </ul>
+                
+                <h3>4. User Conduct</h3>
+                <p>When using the Website, you agree NOT to:</p>
+                <ul>
+                    <li>Post offensive, abusive, or inappropriate comments</li>
+                    <li>Harass, threaten, or harm other users</li>
+                    <li>Share spam or promotional content in comments</li>
+                    <li>Attempt to hack, disrupt, or damage the Website</li>
+                    <li>Impersonate other users or the author</li>
+                </ul>
+                
+                <h3>5. Mature Content Warning</h3>
+                <p>Some stories on this Website may contain mature themes including violence, strong language, or adult situations. Stories marked with 🔞 are intended for readers 18 years and older. By accessing such content, you confirm that you meet the age requirement.</p>
+                
+                <h3>6. Comments & User-Generated Content</h3>
+                <p>By posting comments or reviews on the Website, you grant Hannie's Book Stories:</p>
+                <ul>
+                    <li>The right to display, modify, or remove your comments</li>
+                    <li>The right to use your feedback for promotional purposes</li>
+                </ul>
+                <p>We reserve the right to remove any comments that violate our community guidelines or these terms.</p>
+                
+                <h3>7. Privacy & Data Collection</h3>
+                <p>We collect and store the following information:</p>
+                <ul>
+                    <li>Account information (name, username, email)</li>
+                    <li>Reading progress and bookmarks</li>
+                    <li>Comments and ratings</li>
+                    <li>Newsletter subscription email addresses</li>
+                </ul>
+                <p>Your data is stored locally in your browser and is not shared with third parties. We will never sell your personal information.</p>
+                
+                <h3>8. Newsletter Subscription</h3>
+                <p>By subscribing to our newsletter, you agree to receive email updates about new stories, chapters, and announcements. You may unsubscribe at any time by contacting us.</p>
+                
+                <h3>9. Intellectual Property Rights</h3>
+                <p>The name "Hannie's Book Stories", logos, and branding are trademarks of the author. Unauthorized use of these marks is strictly prohibited.</p>
+                
+                <h3>10. Disclaimer of Warranties</h3>
+                <p>The Website is provided "as is" without any warranties, express or implied. We do not guarantee:</p>
+                <ul>
+                    <li>Uninterrupted or error-free service</li>
+                    <li>The accuracy or reliability of content</li>
+                    <li>That the Website will meet your specific requirements</li>
+                </ul>
+                
+                <h3>11. Limitation of Liability</h3>
+                <p>Hannie's Book Stories and its author shall not be liable for any direct, indirect, incidental, or consequential damages arising from:</p>
+                <ul>
+                    <li>Use or inability to use the Website</li>
+                    <li>Unauthorized access to your account</li>
+                    <li>Any content or conduct of other users</li>
+                </ul>
+                
+                <h3>12. Content Removal & Account Termination</h3>
+                <p>We reserve the right to:</p>
+                <ul>
+                    <li>Remove any story or content at any time</li>
+                    <li>Suspend or terminate accounts that violate these terms</li>
+                    <li>Modify or discontinue the Website without notice</li>
+                </ul>
+                
+                <h3>13. Age Restrictions</h3>
+                <p>You must be at least 13 years old to create an account. Users under 18 accessing mature content do so at their own risk and with parental consent where required by law.</p>
+                
+                <h3>14. Links to Third-Party Websites</h3>
+                <p>The Website may contain links to external sites. We are not responsible for the content, privacy policies, or practices of third-party websites.</p>
+                
+                <h3>15. Changes to Terms</h3>
+                <p>We reserve the right to modify these terms at any time. Continued use of the Website after changes constitutes acceptance of the modified terms. We will update the "Last Updated" date when changes are made.</p>
+                
+                <h3>16. Governing Law</h3>
+                <p>These terms shall be governed by and construed in accordance with applicable laws. Any disputes shall be resolved in the appropriate courts.</p>
+                
+                <h3>17. Contact Information</h3>
+                <p>For questions about these Terms & Conditions, please contact us at:</p>
+                <p><strong>Email:</strong> hannie@bookstories.com<br>
+                <strong>Website:</strong> Hannie's Book Stories</p>
+                
+                <h3>18. Severability</h3>
+                <p>If any provision of these terms is found to be unenforceable or invalid, that provision shall be limited or eliminated to the minimum extent necessary so that the remaining terms remain in full force and effect.</p>
+                
+                <h3>19. Entire Agreement</h3>
+                <p>These Terms & Conditions constitute the entire agreement between you and Hannie's Book Stories regarding the use of the Website.</p>
+                
+                <div class="terms-acceptance">
+                    <p><strong>By using this Website, you acknowledge that you have read, understood, and agree to be bound by these Terms & Conditions.</strong></p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn btn-primary" onclick="closeTermsModal()">I Understand & Agree</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="system.js"></script>
+</body>
+</html>
